@@ -12,8 +12,8 @@ func InitRouter(r *gin.Engine) {
 		router = r
 	}
 
-	initRoutes()
 	initMiddleware()
+	initRoutes()
 }
 
 func initRoutes() {
