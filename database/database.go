@@ -5,45 +5,40 @@
 package shared
 
 import (
-	"fmt"
+	"context"
+	"log"
 
-	"github.com/jinzhu/gorm"
-	// "github.com/jinzhu/gorm/dialects/mssql"
-	// "github.com/jinzhu/gorm/dialects/mysql"
-	// "github.com/jinzhu/gorm/dialects/postgres"
-	// "github.com/jinzhu/gorm/dialects/sqlite"
+	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go"
+	"google.golang.org/api/option"
 )
 
-var db *gorm.DB
+var db *firestore.Client
+var app *firebase.App
 var err error
 
-/*
-dbType can be 'MySql', 'Postrges', ”
-*/
-func Init() {
-	////MySQL
-	//db, err = gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-
-	//PostgreSQL
-	db, err = gorm.Open("postgres", "host=myhost user=gorm dbname=gorm sslmode=disable password=mypassword")
-
-	////SQLite3
-	//db, err = gorm.Open("sqlite3", "/tmp/gorm.db")
-	//
-	////SQL Server
-	//db, err = gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
-
+// Initializing the database
+func InitDatabase() {
+	ctx := context.Background()
+	sa := option.WithCredentialsFile(".config/firebase_secret_key.json")
+	app, err = firebase.NewApp(ctx, nil, sa)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
 
-	//db.AutoMigrate(&models.Person{})
+	db, err = app.Firestore(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer CloseDatabase()
 }
 
-func GetDb() *gorm.DB {
+// Return the instance of database
+func GetDatabase() *firestore.Client {
 	return db
 }
 
-func CloseDb() {
+// Close the databas
+func CloseDatabase() {
 	db.Close()
 }
