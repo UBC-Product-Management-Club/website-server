@@ -1,19 +1,19 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
+	"github.com/UBC-Product-Management-Club/website-server/database"
 	"github.com/UBC-Product-Management-Club/website-server/models"
 	"github.com/gin-gonic/gin"
 )
 
-var greetings = []models.Greeting{
-	{Message: "Hello World"},
-	{Message: "Call To Earthlings"},
-	{Message: "Knock Knck"},
-}
-
 func getGreetings(c *gin.Context) {
+	greetings, err := database.GetAllGreetings()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	c.JSON(http.StatusOK, greetings)
 }
 
@@ -21,9 +21,13 @@ func postGreetings(c *gin.Context) {
 	var newGreeting models.Greeting
 
 	if err := c.BindJSON(&newGreeting); err != nil {
+		log.Fatal(err.Error())
 		return
 	}
 
-	greetings = append(greetings, newGreeting)
+	if err := database.AddGreeting(newGreeting); err != nil {
+		log.Fatal(err.Error())
+		return
+	}
 	c.JSON(http.StatusCreated, newGreeting)
 }
