@@ -2,48 +2,32 @@
  * Created by VoidArtanis on 10/22/2017
  */
 
-package shared
+package database
 
 import (
-	"fmt"
+	"context"
 
-	"github.com/jinzhu/gorm"
-	// "github.com/jinzhu/gorm/dialects/mssql"
-	// "github.com/jinzhu/gorm/dialects/mysql"
-	// "github.com/jinzhu/gorm/dialects/postgres"
-	// "github.com/jinzhu/gorm/dialects/sqlite"
+	"cloud.google.com/go/firestore"
+	"google.golang.org/api/option"
 )
 
-var db *gorm.DB
-var err error
+var client *firestore.Client
 
-/*
-dbType can be 'MySql', 'Postrges', ”
-*/
-func Init() {
-	////MySQL
-	//db, err = gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-
-	//PostgreSQL
-	db, err = gorm.Open("postgres", "host=myhost user=gorm dbname=gorm sslmode=disable password=mypassword")
-
-	////SQLite3
-	//db, err = gorm.Open("sqlite3", "/tmp/gorm.db")
-	//
-	////SQL Server
-	//db, err = gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	//db.AutoMigrate(&models.Person{})
+// Initialize the database
+func InitDatabase() error {
+	var err error
+	projectID := "pmc-website-bfa1a"
+	sa := option.WithCredentialsFile("./.config/firebase_secret_key.json")
+	client, err = firestore.NewClient(context.Background(), projectID, sa)
+	return err
 }
 
-func GetDb() *gorm.DB {
-	return db
+// Return the instance of database
+func GetDatabase() *firestore.Client {
+	return client
 }
 
-func CloseDb() {
-	db.Close()
+// Close the databas
+func CloseDatabase() {
+	client.Close()
 }

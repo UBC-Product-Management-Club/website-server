@@ -7,6 +7,7 @@ import (
 
 var router *gin.Engine
 
+// Initialize the router
 func InitRouter(r *gin.Engine) {
 	if router == nil {
 		router = r
@@ -16,11 +17,20 @@ func InitRouter(r *gin.Engine) {
 	initRoutes()
 }
 
+// Set up end points
 func initRoutes() {
-	router.GET("/hello", getGreetings)
-	router.POST("/hello", postGreetings)
+	setGetPostRoutes("/hello", getGreetings, postGreetings)
+	setGetPostRoutes("/executive", getExecutive, postExecutive)
+	setGetPostRoutes("/fellow", getFellow, postFellow)
+	setGetPostRoutes("/project", getProject, postProject)
 }
 
+func setGetPostRoutes(routeName string, getFunc gin.HandlerFunc, postFunc gin.HandlerFunc) {
+	router.GET(routeName, getFunc)
+	router.POST(routeName, postFunc)
+}
+
+// Initialize middleware
 func initMiddleware() {
 	router.Use(middlewares.CorsMiddleware())
 }

@@ -3,7 +3,7 @@ package models
 import "fmt"
 
 type Greeting struct {
-	Message string `json:"message" binding:"required"`
+	Message string `json:"message" binding:"required" firestore:"message"`
 }
 
 func (this Greeting) Greet() (string, error) {
