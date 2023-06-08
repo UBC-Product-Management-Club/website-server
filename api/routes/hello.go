@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GET request for greetings
 func getGreetings(c *gin.Context) {
 	greetings, err := database.GetAllGreetings()
 	if err != nil {
@@ -17,6 +18,7 @@ func getGreetings(c *gin.Context) {
 	c.JSON(http.StatusOK, greetings)
 }
 
+// POST request for greetings
 func postGreetings(c *gin.Context) {
 	var newGreeting models.Greeting
 

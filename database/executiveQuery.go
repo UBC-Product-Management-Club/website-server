@@ -7,13 +7,13 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-// Add a greeting to database
+// Add an executive to database
 func AddExecutive(exec models.Executive) error {
 	_, _, err := client.Collection("executive").Add(context.Background(), exec)
 	return err
 }
 
-// Get all greetings from database
+// Get all executives from database
 func GetAllExecutives() ([]models.Executive, error) {
 	var execs []models.Executive
 	iter := client.Collection("executive").Documents(context.Background())

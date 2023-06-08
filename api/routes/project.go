@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GET request for project
 func getProject(c *gin.Context) {
 	projects, err := database.GetAllProjects()
 	if err != nil {
@@ -17,6 +18,7 @@ func getProject(c *gin.Context) {
 	c.JSON(http.StatusOK, projects)
 }
 
+// POST request for project
 func postProject(c *gin.Context) {
 	var newProject models.Project
 

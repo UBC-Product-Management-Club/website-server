@@ -12,7 +12,7 @@ import (
 
 var client *firestore.Client
 
-// Initializing the database
+// Initialize the database
 func InitDatabase() error {
 	var err error
 	projectID := "pmc-website-bfa1a"

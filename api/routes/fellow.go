@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GET request for fellow
 func getFellow(c *gin.Context) {
 	fellows, err := database.GetAllFellows()
 	if err != nil {
@@ -17,6 +18,7 @@ func getFellow(c *gin.Context) {
 	c.JSON(http.StatusOK, fellows)
 }
 
+// POST request for fellow
 func postFellow(c *gin.Context) {
 	var newFellow models.Fellow
 

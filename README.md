@@ -20,7 +20,35 @@ Anywhere in the project, to run the server
 ```
 go run .
 ```
+### Database Authentication
+To ensure that authorization to read and write to the database, an environment variable needs to be set (It is recommended to set it in .bashrc or .zshrc)
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/secret/key.json"
+```
+### Curl commands
+Here are the curl commands to interact with the server.\
+**GET Requests**
+```bash
+curl http://localhost:8080/executive # execs
+curl http://localhost:8080/fellow    # fellows
+curl http://localhost:8080/project   # projects
+```
+**POST Requests**
+```bash
+curl POST http://localhost:8080/executive \
+-H "Content-Type: application/json" \
+-d '{"img": "url", "name": "string", "title": "string"}'
+
+
+curl POST http://localhost:8080/fellow \
+-H "Content-Type: application/json" \
+-d '{"img": "url", "name": "string", "title": "Fellow", "bio_text": "string", "linkedin": "url", "projects": [{"Parent":{"Parent":null,"Path":"projects/pmc-website-bfa1a/databases/(default)/documents/project","ID":"project"},"Path":"projects/pmc-website-bfa1a/databases/(default)/documents/project/aEUFciFC3md5GdkEBAD9","ID":"aEUFciFC3md5GdkEBAD9"}]}]}'
+
+curl POST http://localhost:8080/project \
+-H "Content-Type: application/json" \
+-d '{"isFinished": true, "title": "string", "text": "string", "image": "url", "link": "url", "detailId": "id"}'
+```
 ## Notes
 - To see all the endpoints, view **routes.go** in api/routes.
-- The database still only has a basic template.
 - More secure auth should be used. CORS should be customized for more security.
+- Reading and writing to the database currently doesn't have any timeout. It should be implemented in the future with context.

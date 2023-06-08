@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GET request for executive
 func getExecutive(c *gin.Context) {
 	execs, err := database.GetAllExecutives()
 	if err != nil {
@@ -17,6 +18,7 @@ func getExecutive(c *gin.Context) {
 	c.JSON(http.StatusOK, execs)
 }
 
+// POST request for executive
 func postExecutive(c *gin.Context) {
 	var newExec models.Executive
 
