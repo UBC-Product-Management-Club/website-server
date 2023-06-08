@@ -19,6 +19,8 @@ func InitRouter(r *gin.Engine) {
 func initRoutes() {
 	router.GET("/hello", getGreetings)
 	router.POST("/hello", postGreetings)
+	router.GET("/executive", getExecutive)
+	router.POST("/executive", postExecutive)
 }
 
 func initMiddleware() {
