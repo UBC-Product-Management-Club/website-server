@@ -8,6 +8,7 @@ import (
 	"context"
 
 	"cloud.google.com/go/firestore"
+	"google.golang.org/api/option"
 )
 
 var client *firestore.Client
@@ -16,7 +17,8 @@ var client *firestore.Client
 func InitDatabase() error {
 	var err error
 	projectID := "pmc-website-bfa1a"
-	client, err = firestore.NewClient(context.Background(), projectID)
+	sa := option.WithCredentialsFile("./.config/firebase_secret_key.json")
+	client, err = firestore.NewClient(context.Background(), projectID, sa)
 	return err
 }
 

@@ -20,12 +20,7 @@ Anywhere in the project, to run the server
 ```
 go run .
 ```
-### Database Authentication
-To ensure that authorization to read and write to the database, an environment variable needs to be set (It is recommended to set it in .bashrc or .zshrc)
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/secret/key.json"
-```
-### Curl commands
+## Curl commands
 Here are the curl commands to interact with the server.\
 **GET Requests**
 ```bash
