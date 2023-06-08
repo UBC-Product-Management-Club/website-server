@@ -17,10 +17,14 @@ func InitRouter(r *gin.Engine) {
 }
 
 func initRoutes() {
-	router.GET("/hello", getGreetings)
-	router.POST("/hello", postGreetings)
-	router.GET("/executive", getExecutive)
-	router.POST("/executive", postExecutive)
+	setGetPostRoutes("/hello", getGreetings, postGreetings)
+	setGetPostRoutes("/executive", getExecutive, postExecutive)
+	setGetPostRoutes("/fellow", getFellow, postFellow)
+}
+
+func setGetPostRoutes(routeName string, getFunc gin.HandlerFunc, postFunc gin.HandlerFunc) {
+	router.GET(routeName, getFunc)
+	router.POST(routeName, postFunc)
 }
 
 func initMiddleware() {

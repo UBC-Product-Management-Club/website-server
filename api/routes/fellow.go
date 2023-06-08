@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func getFellows(c *gin.Context) {
+func getFellow(c *gin.Context) {
 	fellows, err := database.GetAllFellows()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -17,17 +17,17 @@ func getFellows(c *gin.Context) {
 	c.JSON(http.StatusOK, fellows)
 }
 
-func postFellows(c *gin.Context) {
-	var newExec models.Executive
+func postFellow(c *gin.Context) {
+	var newFellow models.Fellow
 
-	if err := c.BindJSON(&newExec); err != nil {
+	if err := c.BindJSON(&newFellow); err != nil {
 		log.Fatal(err.Error())
 		return
 	}
 
-	if err := database.AddExecutive(newExec); err != nil {
+	if err := database.AddFellow(newFellow); err != nil {
 		log.Fatal(err.Error())
 		return
 	}
-	c.JSON(http.StatusCreated, newExec)
+	c.JSON(http.StatusCreated, newFellow)
 }
