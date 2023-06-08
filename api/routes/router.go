@@ -20,6 +20,7 @@ func initRoutes() {
 	setGetPostRoutes("/hello", getGreetings, postGreetings)
 	setGetPostRoutes("/executive", getExecutive, postExecutive)
 	setGetPostRoutes("/fellow", getFellow, postFellow)
+	setGetPostRoutes("/project", getProject, postProject)
 }
 
 func setGetPostRoutes(routeName string, getFunc gin.HandlerFunc, postFunc gin.HandlerFunc) {
