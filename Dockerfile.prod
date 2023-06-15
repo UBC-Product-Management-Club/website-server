@@ -1,0 +1,21 @@
+FROM golang:1.20-alpine as build-env
+
+RUN mkdir /backend
+WORKDIR /backend
+RUN apk add --update --no-cache ca-certificates git
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/backend
+
+FROM scratch
+COPY --from=build-env /go/bin/backend /go/bin/backend
+COPY .config ./.config
+COPY --from=build-env /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+ENV GIN_MODE=release
+EXPOSE 8080
+
+ENTRYPOINT [ "/go/bin/backend" ]
