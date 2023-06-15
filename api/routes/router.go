@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/UBC-Product-Management-Club/website-server/api/middlewares"
+	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,4 +37,5 @@ func initMiddleware() {
 
 	router.SetTrustedProxies(nil)
 	router.Use(middlewares.ProxyMiddleware())
+	router.Use(helmet.Default())
 }
