@@ -7,6 +7,15 @@ import (
 
 // Return configuration for CORS
 func CorsMiddleware() gin.HandlerFunc {
-	// allow all origins. can be configured later
-	return cors.Default()
+	config := cors.DefaultConfig()
+	config.AllowMethods = []string{"GET", "HEAD", "POST", "PUT", "DELETE"}
+	config.AllowOriginFunc = checkOrigin
+	return cors.New(config)
+}
+
+func checkOrigin(org string) bool {
+	localAddr := map[string]bool{"http://localhost:3000": true}
+	remoteAddr := map[string]bool{"https://www.ubcpm.club/": true}
+
+	return localAddr[org] || remoteAddr[org]
 }
