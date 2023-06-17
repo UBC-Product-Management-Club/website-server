@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/UBC-Product-Management-Club/website-server/api/middlewares"
+	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,4 +34,8 @@ func setGetPostRoutes(routeName string, getFunc gin.HandlerFunc, postFunc gin.Ha
 // Initialize middleware
 func initMiddleware() {
 	router.Use(middlewares.CorsMiddleware())
+
+	router.SetTrustedProxies(nil)
+	router.Use(middlewares.ProxyMiddleware())
+	router.Use(helmet.Default())
 }
