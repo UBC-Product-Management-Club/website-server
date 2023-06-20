@@ -1,18 +1,13 @@
 package middlewares
 
 import (
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-var logger *log.Logger
-
 // A middleware for handling errors on the server
 func ErrorHandlerMiddleware() gin.HandlerFunc {
-	logger = log.New(os.Stdout, "", log.Flags()&^(log.Ldate|log.Ltime))
 	return errorHandler
 }
 
@@ -20,15 +15,17 @@ func ErrorHandlerMiddleware() gin.HandlerFunc {
 func errorHandler(c *gin.Context) {
 	defer handleFatalError(c)
 	c.Next()
-	for _, err := range c.Errors {
-		logger.Println(err.Error())
-	}
+	c.JSON(-1, c.Errors)
 }
 
 // Handle fatal errors (panics)
 func handleFatalError(c *gin.Context) {
-	if err := recover(); err != nil {
-		logger.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"Error": "Unexpected fatal error has occured"})
+	if r := recover(); r != nil {
+		if err, ok := r.(error); ok {
+			c.AbortWithError(http.StatusInternalServerError, err)
+			c.JSON(http.StatusInternalServerError, err.Error())
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unexpected fatal error has occured"})
+		}
 	}
 }

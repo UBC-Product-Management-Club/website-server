@@ -33,6 +33,7 @@ func setGetPostRoutes(routeName string, getFunc gin.HandlerFunc, postFunc gin.Ha
 
 // Initialize middleware
 func initMiddleware() {
+	router.Use(middlewares.ErrorHandlerMiddleware())
 	router.Use(middlewares.CorsMiddleware())
 
 	router.SetTrustedProxies(nil)
