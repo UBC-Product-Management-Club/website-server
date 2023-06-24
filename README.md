@@ -47,3 +47,15 @@ curl POST http://localhost:8080/project \
 - To see all the endpoints, view **routes.go** in api/routes.
 - More secure auth should be used. CORS should be customized for more security.
 - Reading and writing to the database currently doesn't have any timeout. It should be implemented in the future with context.
+
+## Running Docker
+There are two Dockerfiles: Production and Development. The development container has more features while production is more lightweight.
+
+Before running Docker, make sure you have Docker and Docker Desktop installed on your device.
+
+Next, build the Docker image by running:
+```
+docker build -t <Insert Docker Image Name> -f <Insert Dockerfile Name> .
+```
+
+In Docker Desktop, run the image and make sure you enable port forwarding to 8080.
