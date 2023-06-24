@@ -1,0 +1,10 @@
+steps:
+- name: "gcr.io/cloud-builders/docker"
+  args:
+  - build
+  - "--tag=us-west1-docker.pkg.dev/pmc-website-bfa1a/pmc-server/pmc-server-prod"
+  - "--file=./Dockerfile.prod"
+  - .
+
+images:
+- "us-west1-docker.pkg.dev/pmc-website-bfa1a/pmc-server/pmc-server-prod"
