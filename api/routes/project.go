@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/UBC-Product-Management-Club/website-server/database"
@@ -13,7 +12,7 @@ import (
 func getProject(c *gin.Context) {
 	projects, err := database.GetAllProjects()
 	if err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, projects)
 }
@@ -23,12 +22,12 @@ func postProject(c *gin.Context) {
 	var newProject models.Project
 
 	if err := c.BindJSON(&newProject); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	if err := database.AddProject(newProject); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusCreated, newProject)

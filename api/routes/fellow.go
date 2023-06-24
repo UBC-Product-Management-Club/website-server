@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/UBC-Product-Management-Club/website-server/database"
@@ -13,7 +12,7 @@ import (
 func getFellow(c *gin.Context) {
 	fellows, err := database.GetAllFellows()
 	if err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, fellows)
 }
@@ -23,12 +22,12 @@ func postFellow(c *gin.Context) {
 	var newFellow models.Fellow
 
 	if err := c.BindJSON(&newFellow); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	if err := database.AddFellow(newFellow); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusCreated, newFellow)
