@@ -4,4 +4,5 @@ type Executive struct {
 	Img   string `json:"img" firestore:"img"`
 	Name  string `json:"name" firestore:"name" binding:"required"`
 	Title string `json:"title" firestore:"title" binding:"required"`
+	Department string `json:"department" firestore:"department"`
 }
