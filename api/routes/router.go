@@ -18,7 +18,7 @@ func InitRouter(r *gin.Engine) {
 	}
 	routeTimeout = map[string]time.Duration{
 		"/hello":     		 		(500 * time.Millisecond),
-		// "/executive":				(1000 * time.Millisecond),
+		"/executive": 				(1000 * time.Millisecond),
 		"/executive/:department": 	(1000 * time.Millisecond),
 		"/fellow":    		 		(1000 * time.Millisecond),
 		"/project":   		 		(1500 * time.Millisecond),
