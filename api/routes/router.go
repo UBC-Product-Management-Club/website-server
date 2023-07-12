@@ -32,7 +32,7 @@ func InitRouter(r *gin.Engine) {
 func initRoutes() {
 	setGetPostRoutes("/hello", getGreetings, postGreetings)
 	setGetPostRoutes("/executive", getExecutive, postExecutive)
-	setGetPostRoutes("/executive/:department", getDepartmentExecutive, postExecutive)
+	router.GET("/executive/:department", getDepartmentExecutive)
 	setGetPostRoutes("/fellow", getFellow, postFellow)
 	setGetPostRoutes("/project", getProject, postProject)
 }
