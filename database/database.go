@@ -14,12 +14,14 @@ import (
 var client *firestore.Client
 
 // Initialize the database
-func InitDatabase() error {
+func InitDatabase() {
 	var err error
 	projectID := "pmc-website-bfa1a"
 	sa := option.WithCredentialsFile("./.config/firebase_secret_key.json")
 	client, err = firestore.NewClient(context.Background(), projectID, sa)
-	return err
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Return the instance of database

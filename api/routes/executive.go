@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/UBC-Product-Management-Club/website-server/database"
@@ -13,7 +12,19 @@ import (
 func getExecutive(c *gin.Context) {
 	execs, err := database.GetAllExecutives()
 	if err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusOK, execs)
+}
+
+// GET request for executive
+func getDepartmentExecutive(c *gin.Context) {
+	label := c.Param("department")
+	execs, err := database.GetAllDepartmentExecutives(label)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	c.JSON(http.StatusOK, execs)
 }
@@ -23,12 +34,12 @@ func postExecutive(c *gin.Context) {
 	var newExec models.Executive
 
 	if err := c.BindJSON(&newExec); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	if err := database.AddExecutive(newExec); err != nil {
-		log.Fatal(err.Error())
+		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusCreated, newExec)

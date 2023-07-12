@@ -30,3 +30,22 @@ func GetAllExecutives() ([]models.Executive, error) {
 	}
 	return execs, nil
 }
+
+// Get all executives in a specific department from database
+func GetAllDepartmentExecutives(department string) ([]models.Executive, error) {
+	var execs []models.Executive
+	query := client.Collection("executive").Where("department", "==", department)
+	iter := query.Documents(context.Background())
+	for doc, err := iter.Next(); err != iterator.Done; doc, err = iter.Next() {
+		if err != nil {
+			return []models.Executive{}, err
+		}
+
+		var tempExec models.Executive
+		if err := doc.DataTo(&tempExec); err != nil {
+			return []models.Executive{}, err
+		}
+		execs = append(execs, tempExec)
+	}
+	return execs, nil
+}
