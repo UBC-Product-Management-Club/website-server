@@ -17,10 +17,11 @@ func InitRouter(r *gin.Engine) {
 		router = r
 	}
 	routeTimeout = map[string]time.Duration{
-		"/hello":     (500 * time.Millisecond),
-		"/executive": (1000 * time.Millisecond),
-		"/fellow":    (1000 * time.Millisecond),
-		"/project":   (1500 * time.Millisecond),
+		"/hello":     		 		(500 * time.Millisecond),
+		"/executive": 				(1000 * time.Millisecond),
+		"/executive/:department": 	(1000 * time.Millisecond),
+		"/fellow":    		 		(1000 * time.Millisecond),
+		"/project":   		 		(1500 * time.Millisecond),
 	}
 
 	initMiddleware()
@@ -31,6 +32,7 @@ func InitRouter(r *gin.Engine) {
 func initRoutes() {
 	setGetPostRoutes("/hello", getGreetings, postGreetings)
 	setGetPostRoutes("/executive", getExecutive, postExecutive)
+	router.GET("/executive/:department", getDepartmentExecutive)
 	setGetPostRoutes("/fellow", getFellow, postFellow)
 	setGetPostRoutes("/project", getProject, postProject)
 }

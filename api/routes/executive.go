@@ -18,6 +18,17 @@ func getExecutive(c *gin.Context) {
 	c.JSON(http.StatusOK, execs)
 }
 
+// GET request for executive
+func getDepartmentExecutive(c *gin.Context) {
+	label := c.Param("department")
+	execs, err := database.GetAllDepartmentExecutives(label)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusOK, execs)
+}
+
 // POST request for executive
 func postExecutive(c *gin.Context) {
 	var newExec models.Executive
