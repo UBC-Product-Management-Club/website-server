@@ -17,11 +17,11 @@ func InitRouter(r *gin.Engine) {
 		router = r
 	}
 	routeTimeout = map[string]time.Duration{
-		"/hello":     		 		(500 * time.Millisecond),
-		"/executive": 				(1000 * time.Millisecond),
-		"/executive/:department": 	(1000 * time.Millisecond),
-		"/fellow":    		 		(1000 * time.Millisecond),
-		"/project":   		 		(1500 * time.Millisecond),
+		"/hello":                 (500 * time.Millisecond),
+		"/executive":             (6000 * time.Millisecond),
+		"/executive/:department": (1000 * time.Millisecond),
+		"/fellow":                (1000 * time.Millisecond),
+		"/project":               (1500 * time.Millisecond),
 	}
 
 	initMiddleware()
