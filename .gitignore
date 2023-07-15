@@ -22,3 +22,7 @@ go.work
 
 # Config settings
 .config/
+
+# Secret keys
+firebase_secret_key.json
+pmc-server_master_key.json
