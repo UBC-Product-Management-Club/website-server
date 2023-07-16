@@ -45,10 +45,10 @@ curl POST -X http://localhost:8080/project \
 - Enter the info in key-value pair (value can either be string or file)
 
 Request:
-img: file
-name: string
-title: string
-department: string
+- img: file
+- name: string
+- title: string
+- department: string
 
 ## Notes
 - To see all the endpoints, view **routes.go** in api/routes.
