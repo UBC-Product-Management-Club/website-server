@@ -17,7 +17,7 @@ func UploadFile(file multipart.File, uploadPath string, fileName string) (string
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
 
-	wc := storageClient.cl.Bucket(bucketName).Object(uploadPath + fileName).NewWriter(ctx)
+	wc := storageClient.cl.Bucket(bucketName).Object(uploadPath + "/" + fileName).NewWriter(ctx)
 	if _, err := io.Copy(wc, file); err != nil {
 		return "", err
 	}
