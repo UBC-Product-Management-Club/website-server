@@ -28,15 +28,3 @@ func UploadFile(file multipart.File, uploadPath string, fileName string) (string
 
 	return "https://storage.googleapis.com/" + bucketName + "/" + uploadPath + "/" + fileName, nil
 }
-
-// func getAllFiles() err {
-
-// }
-
-// func replaceFile(file multipart.File, ) err {
-
-// }
-
-// func deleteFile() err {
-
-// }
