@@ -30,11 +30,6 @@ curl http://localhost:8080/project                  # projects
 ```
 **POST Requests**
 ```bash
-curl POST -X http://localhost:8080/executive \
--H "Content-Type: application/json" \
--d '{"img": "url", "name": "string", "title": "string"}'
-
-
 curl POST -X http://localhost:8080/fellow \
 -H "Content-Type: application/json" \
 -d '{"img": "url", "name": "string", "title": "Fellow", "bio_text": "string", "linkedin": "url", "projects": [{"Parent":{"Parent":null,"Path":"projects/pmc-website-bfa1a/databases/(default)/documents/project","ID":"project"},"Path":"projects/pmc-website-bfa1a/databases/(default)/documents/project/aEUFciFC3md5GdkEBAD9","ID":"aEUFciFC3md5GdkEBAD9"}]}]}'
@@ -43,6 +38,18 @@ curl POST -X http://localhost:8080/project \
 -H "Content-Type: application/json" \
 -d '{"isFinished": true, "title": "string", "text": "string", "image": "url", "link": "url", "detailId": "id"}'
 ```
+
+`/executive` (testing with Postman):
+- Set Content-Type in Header to 'multipart/form-data'
+- Go to body and select form-data
+- Enter the info in key-value pair (value can either be string or file)
+
+Request:
+- img: file
+- name: string
+- title: string
+- department: string
+
 ## Notes
 - To see all the endpoints, view **routes.go** in api/routes.
 - More secure auth should be used. CORS should be customized for more security.
