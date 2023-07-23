@@ -1,0 +1,47 @@
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  GKE_CLUSTER: pmc-server-prod
+  GKE_ZONE: us-west1
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.prod
+        push: true
+        tags: ${{ env.GKE_ZONE }}-docker.pkg.dev/${{ env.PROJECT_ID }}/pmc-server/pmc-server-prod:latest
+    
+    - name: GCloud Auth
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+
+    - name: Configure kubectl
+      run: |
+        gcloud config set project ${{ env.PROJECT_ID }}
+        gcloud config set compute/region ${{ env.GKE_ZONE }}
+        gcloud containter clusters get-credentials ${{ env.GKE_CLUSTER }}
+
+    - name: Apply
+      run: |
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+    
