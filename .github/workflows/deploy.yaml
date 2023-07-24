@@ -19,6 +19,40 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      
+    - name: Create .config folder
+      run: mkdir .config
+      
+    - name: create-firebase-secret-json
+      id: create-json-1
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "firebase_secret_key.json"
+        json: ${{ secrets.FIREBASE_AUTH }}
+        dir: '.config/'
+        
+    - name: create-master-secret-json
+      id: create-json-2 
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "pmc-server_master_key.json"
+        json: ${{ secrets.GCLOUD_AUTH }}
+        dir: '.config/'
+        
+    - id: 'Auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+    
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+      
+    - name: Login to GAR
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.GKE_ZONE }}-docker.pkg.dev
+        username: _json_key
+        password: ${{ secrets.GCLOUD_AUTH }}
 
     - name: Build
       uses: docker/build-push-action@v4
@@ -27,21 +61,24 @@ jobs:
         file: ./Dockerfile.prod
         push: true
         tags: ${{ env.GKE_ZONE }}-docker.pkg.dev/${{ env.PROJECT_ID }}/pmc-server/pmc-server-prod:latest
+
+    - uses: simenandre/setup-gke-gcloud-auth-plugin@v1
     
-    - name: GCloud Auth
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v1'
       with:
-        project_id: ${{ env.PROJECT_ID }}
-        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+        cluster_name: '${{ env.GKE_CLUSTER }}'
+        location: '${{ env.GKE_ZONE }}'
 
     - name: Configure kubectl
       run: |
         gcloud config set project ${{ env.PROJECT_ID }}
         gcloud config set compute/region ${{ env.GKE_ZONE }}
-        gcloud containter clusters get-credentials ${{ env.GKE_CLUSTER }}
-
-    - name: Apply
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}
+        
+    - name: Apply Config and Deploy
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
+        kubectl rollout restart deployment.apps/pmc-server-prod
     
